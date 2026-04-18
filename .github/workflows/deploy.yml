@@ -50,10 +50,12 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
+  # SSH-деплой: Settings → Actions → Variables → SSH_DEPLOY_ENABLED = true; секреты SSH_HOST, SSH_USER, SSH_PRIVATE_KEY; при приватном GHCR — GHCR_READ_TOKEN (PAT с read:packages).
   deploy:
     name: Deploy over SSH
     runs-on: ubuntu-latest
     needs: build-and-push
+    if: ${{ vars.SSH_DEPLOY_ENABLED == 'true' }}
 
     steps:
       - name: Pull and restart container on server
